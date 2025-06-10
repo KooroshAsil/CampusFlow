@@ -132,11 +132,14 @@ The `report.pdf` includes:
 
 ## 👋 About the Authors
 
-This project was developed by:
+This project was developed by/for:
 
-- **Koorosh Asil Gharehbaghi** 
-  _Passionate about databases, coffee, and clean schema design!_
-
+> **Koorosh Asil Gharehbaghi**  
+> **Project:** Database Systems Design  
+> **Course:** Database Systems  
+> **University:** K. N. Toosi University of Technology  
+> **Semester:** Spring 2025
+> _Passionate about databases, coffee, and clean schema design!_  
 ---
 
 ## 🍻 Final Words
@@ -148,4 +151,4 @@ Feel free to fork, run, or expand on it in your own universe. 🚀
 
 ---
 
-> _"Why did the database administrator leave his wife? Because she had too many relations!" – Anonymous DBA 😆
+> "Why did the database administrator leave his wife? Because she had too many relations!" – Anonymous DBA 😆
