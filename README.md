@@ -123,7 +123,8 @@ The `report.pdf` includes:
 
 ## 🛠️ Tools Used
 
-- ✏️ ERD Tool: [draw.io](https://draw.io)
+- ✏️ ERD Tool: ![image](https://github.com/user-attachments/assets/70d15d22-bbc0-43f9-bd63-4db0356d10e6)
+
 - 🗄️ SQL Editor: MySQL Workbench / pgAdmin
 - 📄 Docs: Markdown / LaTeX
 - 🧠 Brain: Yours truly!
