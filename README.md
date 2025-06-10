@@ -3,7 +3,7 @@
 ### End-to-End Database Design for University Registration
 
 Welcome to the **CampusFlow** database project!  
-This project was created as a final assignment for our **Relational Database Design** course and showcases a complete relational database system from scratch.  
+This project was created as a final assignment for my **Relational Database Design** course and showcases a complete relational database system from scratch.  
 Whether you're a student, instructor, or admin, this system is built to _simulate_ the process of managing courses, students, enrollments, grading, and more!
 
 ---
@@ -148,7 +148,7 @@ This project was developed by/for:
 
 Designing a database is like writing a story — every entity has a role, every relationship matters, and normalization keeps the plot clean and organized. 🎭
 
-_Thanks for checking out our project!_  
+_Thanks for checking out my project!_  
 Feel free to fork, run, or expand on it in your own universe. 🚀
 
 ---
