@@ -54,19 +54,52 @@ This database supports:
 > ![CampusFlow ERD](https://github.com/user-attachments/assets/d1dcf603-2442-41bd-9b67-c02db861dc25)
 
 
-
-Entities:
-- `Student`
-- `Instructor`
-- `Course`
-- `Department`
-- `Enrollment`
-- `Grade`
-
-_**Relationships**_:
-- Many-to-many between `Student` and `Course` through `Enrollment`
-- One-to-many: `Department` to `Course`, `Instructor` to `Course`
-- One-to-one (optional): `Enrollment` to `Grade`
+> ## 🧩 Part 2: Entities and Relationships
+>
+> 📦  Entities and Classification  
+> • Strong Entities (rectangles):  
+> – Student  
+> – Instructor  
+> – Course  
+> – Department  
+> – Enrollment  
+> – Grade  
+>
+> • Lookup Entities (rectangles):  
+> – TimeSlot(TimeSlotID, DayOfWeek, StartTime, EndTime)  
+> – Classroom(ClassroomID, Building, RoomNumber, Capacity)  
+>
+> • Associative Entity / Relationship (diamond):  
+> – Prerequisite — links Course to its prerequisite Course.
+>
+> ---
+>
+> 🔗 Relationships & Cardinalities (Chen Notation)  
+> In Chen notation, relationships are diamonds, attributes are ellipses, and cardinalities are shown as (min, max) pairs near each connecting line.
+>
+> • Department [(1,N)] offers Course  
+> (1 Department offers 1..* Courses; each Course is offered by exactly 1 Department)  
+>
+> • Department [(0,N)] employs Instructor  
+> (1 Department employs 0..* Instructors; each Instructor works for exactly 1 Department)  
+>
+> • Course [(1,N)] split_into Section  
+> (1 Course has 1..* Sections; each Section belongs to exactly 1 Course)  
+>
+> • Instructor [(0,N)] teaches Section  
+> (1 Instructor teaches 0..* Sections; each Section is taught by exactly 1 Instructor)  
+>
+> • Section [(1,1)] scheduled_at TimeSlot  
+> (Each Section is assigned exactly 1 TimeSlot; each TimeSlot may host multiple Sections)  
+>
+> • Section [(1,1)] located_in Classroom  
+> (Each Section meets in exactly 1 Classroom; each Classroom may host multiple Sections)  
+>
+> • Student [(0,N)] enrolls_in Section  
+> (1 Student enrolls in 0..* Sections; each Section may have 0..* Students)  
+>
+> • Course [(0,N)] prerequisite_for Course  
+> (A Course may require 0..* prerequisite Courses; each Course may be prerequisite for 0..* Courses)
 
 📸 _See `ER_Diagram.pdf` for details!_
 
