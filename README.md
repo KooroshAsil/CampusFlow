@@ -51,7 +51,8 @@ This database supports:
 ### 2. 📐 ER Diagram
 
 > Created using [draw.io] and exported as PDF
-> ![image](https://github.com/user-attachments/assets/a44060ba-a147-4409-8618-5bb55426dca2)
+> ![CampusFlow ERD](https://github.com/user-attachments/assets/d1dcf603-2442-41bd-9b67-c02db861dc25)
+
 
 
 Entities:
