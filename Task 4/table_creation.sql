@@ -1,24 +1,24 @@
 -- Drop existing tables
-DROP TABLE IF EXISTS dbo.Enrollment;
-DROP TABLE IF EXISTS dbo.Section;
-DROP TABLE IF EXISTS dbo.Prerequisite;
-DROP TABLE IF EXISTS dbo.Course;
-DROP TABLE IF EXISTS dbo.Student;
-DROP TABLE IF EXISTS dbo.Instructor;
-DROP TABLE IF EXISTS dbo.Department;
+DROP TABLE IF EXISTS Enrollment;
+DROP TABLE IF EXISTS Section;
+DROP TABLE IF EXISTS Prerequisite;
+DROP TABLE IF EXISTS Course;
+DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS Instructor;
+DROP TABLE IF EXISTS Department;
 
 -- Create tables
 CREATE TABLE Department (
     DepartmentID INT PRIMARY KEY,
-    DepartmentName NVARCHAR(50) NOT NULL UNIQUE,
-    OfficeLocation NVARCHAR(50)
+    DepartmentName VARCHAR(50) NOT NULL UNIQUE,
+    OfficeLocation VARCHAR(50)
 );
 
 CREATE TABLE Instructor (
     InstructorID INT PRIMARY KEY,
-    FirstName NVARCHAR(50) NOT NULL,
-    LastName NVARCHAR(50) NOT NULL,
-    Email NVARCHAR(100) NOT NULL UNIQUE,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
     Salary DECIMAL(10,2),
     DepartmentID INT NOT NULL,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
@@ -26,9 +26,9 @@ CREATE TABLE Instructor (
 
 CREATE TABLE Student (
     StudentID INT PRIMARY KEY,
-    FirstName NVARCHAR(50) NOT NULL,
-    LastName NVARCHAR(50) NOT NULL,
-    Email NVARCHAR(100) NOT NULL UNIQUE,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
     MajorDeptID INT,
     EnrollmentYear SMALLINT NOT NULL,
     FOREIGN KEY (MajorDeptID) REFERENCES Department(DepartmentID)
@@ -36,9 +36,9 @@ CREATE TABLE Student (
 
 CREATE TABLE Course (
     CourseID INT PRIMARY KEY,
-    CourseName NVARCHAR(50) NOT NULL,
+    CourseName VARCHAR(50) NOT NULL,
     Credits DECIMAL(3,1) NOT NULL,
-    Description NVARCHAR(200),
+    Description VARCHAR(200),
     DepartmentID INT NOT NULL,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
 );
@@ -54,7 +54,7 @@ CREATE TABLE Prerequisite (
 CREATE TABLE Section (
     SectionID INT PRIMARY KEY,
     CourseID INT NOT NULL,
-    Semester NVARCHAR(10) NOT NULL,
+    Semester VARCHAR(10) NOT NULL,
     Year SMALLINT NOT NULL,
     InstructorID INT NOT NULL,
     Capacity INT NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE Enrollment (
     StudentID INT NOT NULL,
     SectionID INT NOT NULL,
     EnrollmentDate DATE NOT NULL,
-    Grade NVARCHAR(2),
+    Grade VARCHAR(2),
     FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
     FOREIGN KEY (SectionID) REFERENCES Section(SectionID)
 );
