@@ -1,4 +1,3 @@
-
 INSERT INTO Department (DepartmentID, DepartmentName, OfficeLocation) VALUES
 (1, 'Computer Science', 'Engineering Building, Office A1'),
 (2, 'Mathematics', 'Engineering Building, Office A2'),
@@ -474,4 +473,3 @@ INSERT INTO Enrollment (EnrollmentID, StudentID, SectionID, EnrollmentDate, Grad
 (98, 2082, 30, '2025-03-02', NULL),
 (99, 2083, 36, '2025-08-20', NULL),
 (100, 2084, 37, '2025-08-21', NULL);
-

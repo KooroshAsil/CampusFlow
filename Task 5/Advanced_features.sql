@@ -1,4 +1,6 @@
-CREATE VIEW StudentEnrollmentDetails AS
+
+-- View: StudentEnrollmentDetails
+CREATE OR REPLACE VIEW StudentEnrollmentDetails AS
 SELECT
     s.StudentID,
     s.FirstName AS StudentFirstName,
@@ -26,90 +28,80 @@ JOIN
     Instructor inst ON sec.InstructorID = inst.InstructorID
 LEFT JOIN
     Department d_major ON s.MajorDeptID = d_major.DepartmentID;
-GO
 
-CREATE PROCEDURE EnrollStudentInSection
-    @StudentID INT,
-    @SectionID INT,
-    @EnrollmentDate DATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @CurrentCapacity INT;
-    DECLARE @MaxCapacity INT;
-    DECLARE @EnrollmentID INT;
-
-    SELECT @CurrentCapacity = (Capacity - (SELECT COUNT(*) FROM Enrollment WHERE SectionID = @SectionID)),
-           @MaxCapacity = Capacity
-    FROM Section
-    WHERE SectionID = @SectionID;
-
-    IF @MaxCapacity IS NULL
-    BEGIN
-        PRINT 'Error: Section does not exist.';
-        RETURN -1;
-    END
-
-    IF @CurrentCapacity <= 0
-    BEGIN
-        PRINT 'Error: Section is full. Cannot enroll student.';
-        RETURN -2;
-    END
-
-    IF EXISTS (SELECT 1 FROM Enrollment WHERE StudentID = @StudentID AND SectionID = @SectionID)
-    BEGIN
-        PRINT 'Error: Student is already enrolled in this section.';
-        RETURN -3;
-    END
-
-    SELECT @EnrollmentID = ISNULL(MAX(EnrollmentID), 0) + 1 FROM Enrollment;
-
-    INSERT INTO Enrollment (EnrollmentID, StudentID, SectionID, EnrollmentDate, Grade)
-    VALUES (@EnrollmentID, @StudentID, @SectionID, @EnrollmentDate, NULL);
-
-    PRINT 'Student enrolled successfully.';
-    RETURN 0;
-END;
-GO
-
-CREATE FUNCTION GetInstructorSectionCount
-(
-    @InstructorID INT
+-- Procedure: EnrollStudentInSection
+DELIMITER $$
+CREATE PROCEDURE EnrollStudentInSection(
+    IN StudentID INT,
+    IN SectionID INT,
+    IN EnrollmentDate DATE
 )
-RETURNS INT
-AS
 BEGIN
-    DECLARE @SectionCount INT;
+    DECLARE CurrentCapacity INT;
+    DECLARE MaxCapacity INT;
+    DECLARE EnrollmentID INT;
 
-    SELECT @SectionCount = COUNT(SectionID)
-    FROM Section
-    WHERE InstructorID = @InstructorID;
-
-    RETURN ISNULL(@SectionCount, 0);
-END;
-GO
-
-ALTER TABLE Section
-ADD CurrentEnrollmentCount INT DEFAULT 0;
-GO
-
-UPDATE Section
-SET CurrentEnrollmentCount = (SELECT COUNT(e.EnrollmentID) FROM Enrollment e WHERE e.SectionID = Section.SectionID);
-GO
-
-CREATE TRIGGER trg_UpdateSectionEnrollmentCount_AfterEnrollment
-ON Enrollment
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    UPDATE s
-    SET s.CurrentEnrollmentCount = s.CurrentEnrollmentCount + 1
+    SELECT (Capacity - COUNT(e.EnrollmentID)), Capacity
+    INTO CurrentCapacity, MaxCapacity
     FROM Section s
-    INNER JOIN INSERTED i ON s.SectionID = i.SectionID;
-END;
-GO
+    LEFT JOIN Enrollment e ON s.SectionID = e.SectionID
+    WHERE s.SectionID = SectionID
+    GROUP BY s.Capacity;
 
-SELECT * FROM StudentEnrollmentDetails
+    IF MaxCapacity IS NULL THEN
+        SELECT 'Error: Section does not exist.' AS Message;
+    ELSEIF CurrentCapacity <= 0 THEN
+        SELECT 'Error: Section is full. Cannot enroll student.' AS Message;
+    ELSEIF EXISTS (
+        SELECT 1 FROM Enrollment WHERE StudentID = StudentID AND SectionID = SectionID
+    ) THEN
+        SELECT 'Error: Student is already enrolled in this section.' AS Message;
+    ELSE
+        SELECT IFNULL(MAX(EnrollmentID), 0) + 1 INTO EnrollmentID FROM Enrollment;
+
+        INSERT INTO Enrollment (EnrollmentID, StudentID, SectionID, EnrollmentDate, Grade)
+        VALUES (EnrollmentID, StudentID, SectionID, EnrollmentDate, NULL);
+
+        SELECT 'Student enrolled successfully.' AS Message;
+    END IF;
+END$$
+DELIMITER ;
+
+-- Function: GetInstructorSectionCount
+DELIMITER $$
+CREATE FUNCTION GetInstructorSectionCount(InstructorID INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE SectionCount INT;
+    SELECT COUNT(*) INTO SectionCount
+    FROM Section
+    WHERE InstructorID = InstructorID;
+    RETURN IFNULL(SectionCount, 0);
+END$$
+DELIMITER ;
+
+-- Alter table to add CurrentEnrollmentCount
+ALTER TABLE Section
+ADD COLUMN CurrentEnrollmentCount INT DEFAULT 0;
+
+-- Update CurrentEnrollmentCount for all sections
+UPDATE Section
+SET CurrentEnrollmentCount = (
+    SELECT COUNT(*) FROM Enrollment e WHERE e.SectionID = Section.SectionID
+);
+
+-- Trigger: trg_UpdateSectionEnrollmentCount_AfterEnrollment
+DELIMITER $$
+CREATE TRIGGER trg_UpdateSectionEnrollmentCount_AfterEnrollment
+AFTER INSERT ON Enrollment
+FOR EACH ROW
+BEGIN
+    UPDATE Section
+    SET CurrentEnrollmentCount = CurrentEnrollmentCount + 1
+    WHERE SectionID = NEW.SectionID;
+END$$
+DELIMITER ;
+
+-- Query to test view
+SELECT * FROM StudentEnrollmentDetails;
