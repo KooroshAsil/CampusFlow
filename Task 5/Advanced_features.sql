@@ -1,5 +1,3 @@
-
--- View: StudentEnrollmentDetails
 CREATE OR REPLACE VIEW StudentEnrollmentDetails AS
 SELECT
     s.StudentID,
@@ -29,7 +27,6 @@ JOIN
 LEFT JOIN
     Department d_major ON s.MajorDeptID = d_major.DepartmentID;
 
--- Procedure: EnrollStudentInSection
 DELIMITER $$
 CREATE PROCEDURE EnrollStudentInSection(
     IN StudentID INT,
@@ -67,7 +64,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Function: GetInstructorSectionCount
 DELIMITER $$
 CREATE FUNCTION GetInstructorSectionCount(InstructorID INT)
 RETURNS INT
@@ -81,17 +77,14 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Alter table to add CurrentEnrollmentCount
 ALTER TABLE Section
 ADD COLUMN CurrentEnrollmentCount INT DEFAULT 0;
 
--- Update CurrentEnrollmentCount for all sections
 UPDATE Section
 SET CurrentEnrollmentCount = (
     SELECT COUNT(*) FROM Enrollment e WHERE e.SectionID = Section.SectionID
 );
 
--- Trigger: trg_UpdateSectionEnrollmentCount_AfterEnrollment
 DELIMITER $$
 CREATE TRIGGER trg_UpdateSectionEnrollmentCount_AfterEnrollment
 AFTER INSERT ON Enrollment

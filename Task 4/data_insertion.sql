@@ -15,8 +15,6 @@ INSERT INTO Department (DepartmentID, DepartmentName, OfficeLocation) VALUES
 (14, 'Civil Engineering', 'Engineering Building, Office A3'),
 (15, 'Mechanical Engineering', 'Engineering Building, Office A4');
 
--- Insert data into Instructor table (50 instructors)
--- Realistic names and emails generated programmatically
 INSERT INTO Instructor (InstructorID, FirstName, LastName, Email, Salary, DepartmentID) VALUES
 (101, 'Liam', 'Nguyen', 'liam.nguyen@university.edu', 92000.00, 1),
 (102, 'Olivia', 'Kim', 'olivia.kim@university.edu', 95000.00, 2),
@@ -70,7 +68,6 @@ INSERT INTO Instructor (InstructorID, FirstName, LastName, Email, Salary, Depart
 (150, 'Hannah', 'Rojas', 'hannah.rojas@university.edu', 93000.00, 5);
 
 
--- Insert data into Student table (150 students)
 INSERT INTO Student (StudentID, FirstName, LastName, Email, MajorDeptID, EnrollmentYear) VALUES
 (2001, 'Emily', 'Garcia', 'emily.garcia@student.university.edu', 1, 2022),
 (2002, 'Jacob', 'Rodriguez', 'jacob.rodriguez@student.university.edu', 1, 2022),
@@ -224,7 +221,6 @@ INSERT INTO Student (StudentID, FirstName, LastName, Email, MajorDeptID, Enrollm
 (2150, 'Scarlett', 'He', 'scarlett.he@student.university.edu', 14, 2022);
 
 
--- Insert data into Course table (60 courses)
 INSERT INTO Course (CourseID, CourseName, Credits, Description, DepartmentID) VALUES
 (1001, 'Introduction to Programming', 3.0, 'Fundamentals of programming using Python.', 1),
 (1002, 'Data Structures and Algorithms', 3.0, 'Advanced topics in data organization and efficient algorithms.', 1),
@@ -291,7 +287,6 @@ INSERT INTO Course (CourseID, CourseName, Credits, Description, DepartmentID) VA
 (15004, 'Machine Design', 3.0, 'Principles of designing mechanical components and systems.', 15);
 
 
--- Insert data into Prerequisite table
 INSERT INTO Prerequisite (CourseID, PrereqCourseID) VALUES
 (1002, 1001), -- Data Structures requires Intro to Programming
 (1003, 1001), -- Database Systems requires Intro to Programming
@@ -307,8 +302,6 @@ INSERT INTO Prerequisite (CourseID, PrereqCourseID) VALUES
 (5003, 5002); -- Genetics requires General Biology II
 
 
--- Insert data into Section table (many sections to support 100 enrollments)
--- Distribute sections across various courses, semesters, and instructors
 INSERT INTO Section (SectionID, CourseID, Semester, Year, InstructorID, Capacity) VALUES
 (1, 1001, 'Fall', 2024, 101, 30), -- Intro to Prog
 (2, 1001, 'Fall', 2024, 116, 30),
@@ -371,7 +364,6 @@ INSERT INTO Section (SectionID, CourseID, Semester, Year, InstructorID, Capacity
 (59, 8004, 'Spring', 2026, 108, 25),
 (60, 9004, 'Spring', 2026, 109, 20);
 
--- Insert data into Enrollment table (100 enrollment samples)
 INSERT INTO Enrollment (EnrollmentID, StudentID, SectionID, EnrollmentDate, Grade) VALUES
 (1, 2001, 1, '2024-08-15', 'A'),
 (2, 2002, 1, '2024-08-15', 'B+'),
