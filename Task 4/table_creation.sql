@@ -1,4 +1,3 @@
--- Drop existing tables
 DROP TABLE IF EXISTS Enrollment;
 DROP TABLE IF EXISTS Section;
 DROP TABLE IF EXISTS Prerequisite;
@@ -7,67 +6,75 @@ DROP TABLE IF EXISTS Student;
 DROP TABLE IF EXISTS Instructor;
 DROP TABLE IF EXISTS Department;
 
--- Create tables
 CREATE TABLE Department (
-    DepartmentID INT PRIMARY KEY,
+    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
     DepartmentName VARCHAR(50) NOT NULL UNIQUE,
     OfficeLocation VARCHAR(50)
 );
 
 CREATE TABLE Instructor (
-    InstructorID INT PRIMARY KEY,
+    InstructorID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
     Salary DECIMAL(10,2),
     DepartmentID INT NOT NULL,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE Student (
-    StudentID INT PRIMARY KEY,
+    StudentID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
     MajorDeptID INT,
     EnrollmentYear SMALLINT NOT NULL,
     FOREIGN KEY (MajorDeptID) REFERENCES Department(DepartmentID)
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE Course (
-    CourseID INT PRIMARY KEY,
+    CourseID INT PRIMARY KEY AUTO_INCREMENT,
     CourseName VARCHAR(50) NOT NULL,
     Credits DECIMAL(3,1) NOT NULL,
     Description VARCHAR(200),
     DepartmentID INT NOT NULL,
     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Prerequisite (
     CourseID INT NOT NULL,
     PrereqCourseID INT NOT NULL,
-    PRIMARY KEY(CourseID, PrereqCourseID),
-    FOREIGN KEY (CourseID) REFERENCES Course(CourseID),
+    PRIMARY KEY (CourseID, PrereqCourseID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (PrereqCourseID) REFERENCES Course(CourseID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Section (
-    SectionID INT PRIMARY KEY,
+    SectionID INT PRIMARY KEY AUTO_INCREMENT,
     CourseID INT NOT NULL,
     Semester VARCHAR(10) NOT NULL,
     Year SMALLINT NOT NULL,
     InstructorID INT NOT NULL,
     Capacity INT NOT NULL,
-    FOREIGN KEY (CourseID) REFERENCES Course(CourseID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (InstructorID) REFERENCES Instructor(InstructorID)
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE Enrollment (
-    EnrollmentID INT PRIMARY KEY,
+    EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT NOT NULL,
     SectionID INT NOT NULL,
     EnrollmentDate DATE NOT NULL,
     Grade VARCHAR(2),
-    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (SectionID) REFERENCES Section(SectionID)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
